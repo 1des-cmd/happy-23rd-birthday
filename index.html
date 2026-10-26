@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Happy 23rd Birthday, Babyyy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Patrick+Hand&display=swap">
+<style>
+/* Layout concept: a corkboard of full-screen "scenes" (cover, menu, photos, reasons, letter, wish),
+   swapped via [hidden], each painted with the same hand-painted gingham checker and populated
+   with pinned, slightly-rotated paper pieces — polaroids, a letter, a bouquet, a cake. */
+:root{
+  --cream:#f8efd9;
+  --tile:#c7def2;
+  --tile-soft:#deebf7;
+  --navy:#33496b;
+  --ink:#473c2c;
+  --paper:#fffaf0;
+  --pink:#e8a0b2;
+  --gold:#e3b23c;
+  --green:#8fbd74;
+  color-scheme: light;
+}
+
+*{box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  margin:0;
+  background:var(--cream);
+  color:var(--ink);
+  font-family:'Patrick Hand',cursive,system-ui,sans-serif;
+}
+
+h1,h2,.hand-lg{
+  font-family:'Caveat',cursive,system-ui,sans-serif;
+  font-weight:700;
+  text-wrap:balance;
+  margin:0;
+}
+
+button{font-family:inherit;}
+
+.scene{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  min-height:100%;
+  width:100%;
+  padding-block:40px;
+  background-color:var(--cream);
+  background-image:
+    linear-gradient(45deg, var(--tile-soft) 25%, transparent 25%, transparent 75%, var(--tile-soft) 75%, var(--tile-soft)),
+    linear-gradient(45deg, var(--tile-soft) 25%, transparent 25%, transparent 75%, var(--tile-soft) 75%, var(--tile-soft));
+  background-size:56px 56px;
+  background-position:0 0, 28px 28px;
+  position:relative;
+}
+
+.scene-inner{
+  width:100%;
+  max-width:480px;
+  padding-left:max(20px, env(safe-area-inset-left,0px));
+  padding-right:max(20px, env(safe-area-inset-right,0px));
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:22px;
+}
+
+.back-btn{
+  position:sticky;
+  top:max(12px, env(safe-area-inset-top,0px));
+  align-self:flex-start;
+  margin-left:max(4px, env(safe-area-inset-left,0px));
+  background:var(--paper);
+  border:2px solid var(--navy);
+  color:var(--navy);
+  border-radius:999px;
+  padding:6px 16px 8px;
+  font-family:'Patrick Hand',cursive;
+  font-size:1.05rem;
+  cursor:pointer;
+  box-shadow:2px 3px 0 rgba(51,73,107,.18);
+  z-index:5;
+}
+.back-btn:active{transform:translateY(1px);}
+
+.eyebrow{
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  font-family:'Patrick Hand',cursive;
+  font-size:.78rem;
+  color:var(--navy);
+  opacity:.75;
+}
+
+.tape{
+  position:absolute;
+  width:70px;
+  height:26px;
+  background:repeating-linear-gradient(45deg, rgba(255,255,255,.55) 0 6px, rgba(230,220,195,.55) 6px 12px);
+  opacity:.85;
+  box-shadow:0 1px 2px rgba(0,0,0,.12);
+}
+
+/* ---------- Cover ---------- */
+#scene-cover .scene-inner{justify-content:center;min-height:calc(100% - 80px);text-align:center;}
+.gift-wrap{cursor:pointer;border:none;background:none;padding:0;display:flex;flex-direction:column;align-items:center;gap:18px;}
+.gift-svg{width:150px;height:auto;filter:drop-shadow(3px 5px 0 rgba(51,73,107,.18));}
+@media (prefers-reduced-motion:no-preference){
+  .gift-svg{animation:bob 3.2s ease-in-out infinite;}
+  .gift-wrap.popped .gift-svg{animation:pop .5s ease forwards;}
+}
+@keyframes pop{0%{transform:scale(1) rotate(0);}40%{transform:scale(1.18) rotate(-6deg);}100%{transform:scale(0) rotate(8deg);opacity:0;}}
+@keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+
+.cover-title{font-size:clamp(2.6rem,9vw,3.6rem);color:var(--navy);}
+.cover-sub{font-size:1.25rem;color:var(--ink);opacity:.85;max-width:30ch;}
+.open-btn{
+  margin-top:6px;
+  background:var(--navy);
+  color:var(--paper);
+  border:none;
+  border-radius:999px;
+  padding:12px 28px;
+  font-family:'Caveat',cursive;
+  font-weight:700;
+  font-size:1.4rem;
+  cursor:pointer;
+  box-shadow:3px 4px 0 rgba(51,73,107,.3);
+}
+.open-btn:active{transform:translateY(2px);box-shadow:1px 2px 0 rgba(51,73,107,.3);}
+
+/* ---------- Menu ---------- */
+.menu-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  width:100%;
+}
+.menu-card{
+  background:var(--paper);
+  border:2px solid var(--navy);
+  border-radius:16px;
+  padding:20px 10px 16px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  cursor:pointer;
+  box-shadow:3px 4px 0 rgba(51,73,107,.18);
+  font-family:'Patrick Hand',cursive;
+  color:var(--ink);
+}
+.menu-card:active{transform:translateY(2px);box-shadow:1px 2px 0 rgba(51,73,107,.18);}
+.menu-card svg{width:46px;height:46px;}
+.menu-card span{font-size:1.05rem;}
+
+/* ---------- Photos ---------- */
+.banner{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
+.banner svg{width:100%;max-width:280px;height:auto;}
+.photo-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:22px 16px;
+  width:100%;
+  padding-top:8px;
+}
+.polaroid{
+  background:var(--paper);
+  border:1px solid #e4d9bf;
+  border-radius:4px;
+  padding:8px 8px 14px;
+  box-shadow:2px 4px 6px rgba(51,73,107,.18);
+}
+.polaroid:nth-child(odd){transform:rotate(-4deg);}
+.polaroid:nth-child(even){transform:rotate(3deg);}
+.polaroid .ph-art{width:100%;display:block;border-radius:2px;}
+.polaroid img.ph-art{aspect-ratio:4/5;object-fit:cover;}
+.polaroid figcaption{
+  text-align:center;
+  padding-top:8px;
+  font-family:'Caveat',cursive;
+  font-size:1.05rem;
+  color:var(--ink);
+}
+
+/* ---------- Reasons ---------- */
+.reasons-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;width:100%;}
+.reasons-list li{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  background:var(--paper);
+  border:2px solid var(--navy);
+  border-radius:14px;
+  padding:12px 14px;
+  box-shadow:2px 3px 0 rgba(51,73,107,.15);
+  font-size:1.1rem;
+}
+.reasons-list li::before{content:"♥";color:var(--pink);flex:none;font-size:1.1rem;line-height:1.5;}
+.sunflower{width:150px;height:auto;margin-top:4px;}
+
+/* ---------- Letter ---------- */
+.letter-card{
+  position:relative;
+  background:
+    repeating-linear-gradient(var(--paper) 0 31px, #e9e1cd 31px 32px);
+  background-color:var(--paper);
+  border:1px solid #e4d9bf;
+  border-radius:4px;
+  padding:58px 20px 24px;
+  box-shadow:3px 5px 10px rgba(51,73,107,.2);
+  transform:rotate(-1.2deg);
+  width:100%;
+}
+.paperclip{position:absolute;top:-18px;left:28px;width:30px;height:auto;transform:rotate(-8deg);}
+.letter-card p{margin:0 0 14px;font-size:1.15rem;line-height:1.7;}
+.letter-sign{font-family:'Caveat',cursive;font-size:1.6rem;color:var(--navy);text-align:right;}
+
+/* ---------- Wish ---------- */
+.cake-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;}
+.cake-svg{width:220px;height:auto;}
+.flame{transform-origin:50% 100%;}
+@media (prefers-reduced-motion:no-preference){
+  .flame{animation:flicker 1.1s ease-in-out infinite;}
+}
+@keyframes flicker{0%,100%{transform:scale(1) rotate(-3deg);}50%{transform:scale(1.1) rotate(4deg);}}
+.flame.out{display:none;}
+.blow-btn{
+  background:none;
+  border:2px dashed var(--navy);
+  color:var(--navy);
+  border-radius:999px;
+  padding:9px 20px;
+  font-family:'Patrick Hand',cursive;
+  font-size:1.05rem;
+  cursor:pointer;
+}
+.wish-message{text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px;}
+.wish-message h2{font-size:2.2rem;color:var(--navy);}
+.letter-link{
+  background:var(--navy);
+  color:var(--paper);
+  border:none;
+  border-radius:999px;
+  padding:10px 22px;
+  font-family:'Caveat',cursive;
+  font-weight:700;
+  font-size:1.25rem;
+  cursor:pointer;
+}
+
+/* ---------- Confetti ---------- */
+.confetti-layer{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:4;}
+.confetti-piece{
+  position:absolute;
+  top:-8%;
+  width:9px;height:14px;
+  opacity:0;
+}
+@media (prefers-reduced-motion:no-preference){
+  .confetti-piece{animation:confetti-fall linear forwards;}
+}
+@keyframes confetti-fall{
+  0%{opacity:1;transform:translateY(0) rotate(0deg);}
+  100%{opacity:0;transform:translateY(340%) rotate(340deg);}
+}
+
+[hidden]{display:none!important;}
+</style>
+</head>
+<body>
+
+<div id="scene-cover" class="scene">
+  <div class="scene-inner">
+    <button class="gift-wrap" id="openGift" aria-label="Open your gift">
+      <svg class="gift-svg" viewBox="0 0 120 110" fill="none">
+        <rect x="14" y="40" width="92" height="62" rx="4" fill="#fffaf0" stroke="#33496b" stroke-width="3"/>
+        <rect x="8" y="22" width="104" height="22" rx="4" fill="#deebf7" stroke="#33496b" stroke-width="3"/>
+        <rect x="52" y="22" width="16" height="80" fill="#e8a0b2" stroke="#33496b" stroke-width="2.5"/>
+        <path d="M60 22c-10-18-34-14-26 0 4 7 18 7 26 0Z" fill="#e8a0b2" stroke="#33496b" stroke-width="2.5"/>
+        <path d="M60 22c10-18 34-14 26 0-4 7-18 7-26 0Z" fill="#e8a0b2" stroke="#33496b" stroke-width="2.5"/>
+      </svg>
+      <span class="eyebrow">tap to open</span>
+    </button>
+    <h1 class="cover-title" id="coverTitle">Happy Birthday!</h1>
+    <p class="cover-sub">You have a little surprise waiting for you.</p>
+  </div>
+</div>
+
+<div id="scene-menu" class="scene" hidden>
+  <div class="scene-inner">
+    <h1 class="cover-title" id="menuTitle" style="font-size:clamp(2rem,7vw,2.6rem);">For you, Baby</h1>
+    <p class="cover-sub" style="margin-bottom:4px;">pick a card to open ↓</p>
+    <div class="menu-grid">
+      <button class="menu-card" data-nav="photos">
+        <svg viewBox="0 0 48 48"><rect x="6" y="8" width="36" height="30" rx="2" fill="#deebf7" stroke="#33496b" stroke-width="2.5"/><circle cx="34" cy="16" r="3.5" fill="#e3b23c"/><path d="M8 32l9-11 7 8 6-6 10 11" stroke="#33496b" stroke-width="2.5" fill="none" stroke-linejoin="round"/></svg>
+        <span>Our Photos</span>
+      </button>
+      <button class="menu-card" data-nav="reasons">
+        <svg viewBox="0 0 48 48"><path d="M24 40S6 28 6 16c0-7 6-11 11-11 4 0 7 2 7 2s3-2 7-2c5 0 11 4 11 11 0 12-18 24-18 24Z" fill="#e8a0b2" stroke="#33496b" stroke-width="2.5"/></svg>
+        <span>Reasons I Love You</span>
+      </button>
+      <button class="menu-card" data-nav="wish">
+        <svg viewBox="0 0 48 48"><ellipse cx="24" cy="38" rx="18" ry="5" fill="#deebf7" stroke="#33496b" stroke-width="2"/><rect x="10" y="26" width="28" height="12" rx="2" fill="#fffaf0" stroke="#33496b" stroke-width="2.5"/><rect x="22" y="12" width="4" height="14" fill="#e3b23c" stroke="#33496b" stroke-width="2"/><path d="M24 6c3 3 3 6 0 8-3-2-3-5 0-8Z" fill="#e3b23c"/></svg>
+        <span>Make a Wish</span>
+      </button>
+      <button class="menu-card" data-nav="letter">
+        <svg viewBox="0 0 48 48"><rect x="6" y="10" width="36" height="28" rx="2" fill="#fffaf0" stroke="#33496b" stroke-width="2.5"/><path d="M6 12l18 14L42 12" stroke="#33496b" stroke-width="2.5" fill="none" stroke-linejoin="round"/></svg>
+        <span>A Letter For You</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="scene-photos" class="scene" hidden>
+  <div class="scene-inner">
+    <button class="back-btn" data-nav="menu">← menu</button>
+    <div class="banner">
+      <svg viewBox="0 0 280 60"><g fill="none" stroke="#33496b" stroke-width="2"><path d="M4 10h272"/></g>
+        <g fill="#e8a0b2"><path d="M20 10l14 16-14 0z"/><path d="M60 10l14 16-14 0z"/><path d="M100 10l14 16-14 0z"/></g>
+        <g fill="#deebf7"><path d="M40 10l14 16-14 0z"/><path d="M80 10l14 16-14 0z"/></g>
+        <text x="140" y="46" text-anchor="middle" font-family="Caveat, cursive" font-size="30" font-weight="700" fill="#33496b">happy birthday!</text>
+      </svg>
+    </div>
+    <div class="photo-grid" id="photoGrid"></div>
+  </div>
+</div>
+
+<div id="scene-reasons" class="scene" hidden>
+  <div class="scene-inner">
+    <button class="back-btn" data-nav="menu">← menu</button>
+    <h1 class="hand-lg" style="font-size:2.2rem;color:var(--navy);">reasons I love you</h1>
+    <ul class="reasons-list" id="reasonsList"></ul>
+    <svg class="sunflower" viewBox="0 0 120 150" fill="none">
+      <path d="M60 148V88" stroke="#8fbd74" stroke-width="4"/>
+      <path d="M60 122c-16-2-22-14-20-26 14 2 22 12 20 26Z" fill="#8fbd74" stroke="#33496b" stroke-width="2"/>
+      <g stroke="#33496b" stroke-width="1.5">
+        <ellipse cx="60" cy="27" rx="9" ry="20" fill="#e3b23c" transform="rotate(0 60 55)"/>
+        <ellipse cx="60" cy="27" rx="9" ry="20" fill="#e3b23c" transform="rotate(36 60 55)"/>
+        <ellipse cx="60" cy="27" rx="9" ry="20" fill="#e3b23c" transform="rotate(72 60 55)"/>
+        <ellipse cx="60" cy="27" rx="9" ry="20" fill="#e3b23c" transform="rotate(108 60 55)"/>
+        <ellipse cx="60" cy="27" rx="9" ry="20" fill="#e3b23c" transform="rotate(144 60 55)"/>
+        <ellipse cx="60" cy="27" rx="9" ry="20" fill="#e3b23c" transform="rotate(180 60 55)"/>
+        <ellipse cx="60" cy="27" rx="9" ry="20" fill="#e3b23c" transform="rotate(216 60 55)"/>
+        <ellipse cx="60" cy="27" rx="9" ry="20" fill="#e3b23c" transform="rotate(252 60 55)"/>
+        <ellipse cx="60" cy="27" rx="9" ry="20" fill="#e3b23c" transform="rotate(288 60 55)"/>
+        <ellipse cx="60" cy="27" rx="9" ry="20" fill="#e3b23c" transform="rotate(324 60 55)"/>
+      </g>
+      <circle cx="60" cy="55" r="18" fill="#473c2c" stroke="#33496b" stroke-width="2"/>
+      <g fill="#30261a">
+        <circle cx="54" cy="49" r="1.6"/><circle cx="64" cy="49" r="1.6"/><circle cx="59" cy="55" r="1.6"/>
+        <circle cx="52" cy="58" r="1.6"/><circle cx="66" cy="58" r="1.6"/><circle cx="60" cy="63" r="1.6"/>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<div id="scene-letter" class="scene" hidden>
+  <div class="scene-inner">
+    <button class="back-btn" data-nav="menu">← menu</button>
+    <div class="letter-card">
+      <svg class="paperclip" viewBox="0 0 24 60" fill="none"><path d="M6 10v34a6 6 0 0012 0V14a4 4 0 00-8 0v28a2 2 0 004 0V16" stroke="#33496b" stroke-width="2.5" stroke-linecap="round"/></svg>
+      <div id="letterBody"></div>
+      <p class="letter-sign" id="letterSign"></p>
+    </div>
+  </div>
+</div>
+
+<div id="scene-wish" class="scene" hidden>
+  <div class="scene-inner">
+    <button class="back-btn" data-nav="menu">← menu</button>
+    <h1 class="hand-lg" style="font-size:2rem;color:var(--navy);text-align:center;">blow out your candle &amp; make a wish</h1>
+    <div class="cake-wrap" id="cakeWrap">
+      <svg class="cake-svg" viewBox="0 0 200 170" fill="none">
+        <ellipse cx="100" cy="150" rx="78" ry="12" fill="#deebf7" stroke="#33496b" stroke-width="2.5"/>
+        <rect x="35" y="96" width="130" height="54" rx="6" fill="#fffaf0" stroke="#33496b" stroke-width="3"/>
+        <path d="M35 100c10-10 20 10 32 0s22 10 33 0 22 10 32 0 20 10 32 0v6c-10 10-20-10-32 0s-22-10-32 0-22-10-33 0-22-10-32 0Z" fill="#e8a0b2" stroke="#33496b" stroke-width="2"/>
+        <rect x="55" y="66" width="90" height="34" rx="6" fill="#fffaf0" stroke="#33496b" stroke-width="3"/>
+        <circle cx="70" cy="70" r="4" fill="#e3b23c"/><circle cx="100" cy="68" r="4" fill="#e8a0b2"/><circle cx="130" cy="70" r="4" fill="#8fbd74"/>
+        <rect x="95" y="38" width="7" height="28" fill="#deebf7" stroke="#33496b" stroke-width="2"/>
+        <g class="flame" id="flame">
+          <path d="M98.5 16c5 6 5 12 0 16-5-4-5-10 0-16Z" fill="#e3b23c" stroke="#33496b" stroke-width="1.5"/>
+        </g>
+      </svg>
+      <button class="blow-btn" id="blowBtn">tap the flame to blow it out</button>
+    </div>
+    <div class="wish-message" id="wishMessage" hidden>
+      <h2>Happy birthday! 🎉</h2>
+      <p class="cover-sub">I hope every wish on that list comes true this year.</p>
+      <button class="letter-link" data-nav="letter">Read your letter →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===================== CONFIG — EDIT ME =====================
+const CONFIG = {
+  herName: "Baby",           // her name — shown on the cover and the menu
+  yourName: "Me",            // your name — signs the letter
+  reasons: [                 // as many or as few as you like
+    "You are the kind of person who brings me peace without even trying.",
+    "You remember the tiny things I forget about myself",
+    "Feels like home whenever I'm holding your hands and when we're together ^^",
+    "I just love who you are, you are perfect for me babyyy",
+    "I love your eyes, kahit na pang maldita yang eyes na yan.",
+    "You're the first person I want to tell anything to"
+  ],
+  letter: {                  // each string is one paragraph
+    paragraphs: [
+      "Happy birthday to the person who makes everything better just by being in it.",
+      "I made you this little corner of the internet because you deserve more than just a text today — you deserve something that took time, like you give me every single day.",
+      "I hope this year brings you everything you've been quietly hoping for, and that I get to watch it happen right beside you.",
+      "I just want you to be healthy, and I want to travel the world with you.",
+      "I love you so much."
+    ],
+    signoff: "Yours, always, your babyyy"
+  },
+  photos: [                  // caption only = drawn placeholder. add a src to use a real photo.
+    { caption: "cutie throwback picture of my babyyy", src: "images/1.jpg" },
+    { caption: "just us being cute", src: "images/2.jpg" },
+    { caption: "us with inheat niyogieee", src: "images/3.jpg" },
+    { caption: "stolen picture of my baby", src: "images/4.jpg" },
+    { caption: "my favorite picture of my baby", src: "images/5.jpg" },
+    { caption: "favorite picture of us, more of us, soon", src: "images/6.jpg" }
+  ]
+};
+// ================================================================
+
+function placeholderArt(){
+  return '<svg class="ph-art" viewBox="0 0 100 70" aria-hidden="true">'
+    + '<rect width="100" height="70" fill="#cfe3f3"/>'
+    + '<circle cx="78" cy="14" r="8" fill="#f6df9e"/>'
+    + '<path d="M0 58 Q20 40 42 54 T100 50 V70 H0 Z" fill="#a9cf8c"/>'
+    + '<path d="M0 64 Q25 52 55 62 T100 60 V70 H0 Z" fill="#8fbd74"/>'
+    + '</svg>';
+}
+
+function renderMenu(){
+  document.getElementById('coverTitle').textContent = 'Happy Birthday, ' + CONFIG.herName + '!';
+  document.getElementById('menuTitle').textContent = 'For you, ' + CONFIG.herName;
+}
+
+function renderPhotos(){
+  const grid = document.getElementById('photoGrid');
+  grid.innerHTML = CONFIG.photos.map(p => {
+    const art = p.src ? '<img class="ph-art" src="' + p.src + '" alt="' + p.caption + '">' : placeholderArt();
+    return '<figure class="polaroid">' + art + '<figcaption>' + p.caption + '</figcaption></figure>';
+  }).join('');
+}
+
+function renderReasons(){
+  const list = document.getElementById('reasonsList');
+  list.innerHTML = CONFIG.reasons.map(r => '<li>' + r + '</li>').join('');
+}
+
+function renderLetter(){
+  document.getElementById('letterBody').innerHTML = CONFIG.letter.paragraphs.map(p => '<p>' + p + '</p>').join('');
+  document.getElementById('letterSign').textContent = CONFIG.letter.signoff + ', ' + CONFIG.yourName;
+}
+
+function showScene(id){
+  document.querySelectorAll('.scene').forEach(s => s.hidden = (s.id !== 'scene-' + id));
+  window.scrollTo(0, 0);
+}
+
+function spawnConfetti(container){
+  const colors = ['#e8a0b2', '#e3b23c', '#8fbd74', '#33496b', '#deebf7'];
+  const layer = document.createElement('div');
+  layer.className = 'confetti-layer';
+  for (let i = 0; i < 34; i++){
+    const piece = document.createElement('span');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random() * 100 + '%';
+    piece.style.background = colors[i % colors.length];
+    piece.style.animationDuration = (1 + Math.random() * 0.8) + 's';
+    piece.style.animationDelay = (Math.random() * 0.25) + 's';
+    piece.style.transform = 'rotate(' + (Math.random() * 360) + 'deg)';
+    layer.appendChild(piece);
+  }
+  container.appendChild(layer);
+  setTimeout(() => layer.remove(), 2200);
+}
+
+document.addEventListener('click', e => {
+  const nav = e.target.closest('[data-nav]');
+  if (nav) showScene(nav.dataset.nav);
+});
+
+document.getElementById('openGift').addEventListener('click', function(){
+  this.classList.add('popped');
+  spawnConfetti(document.getElementById('scene-cover'));
+  setTimeout(() => showScene('menu'), 480);
+});
+
+document.getElementById('blowBtn').addEventListener('click', () => {
+  document.getElementById('flame').classList.add('out');
+  document.getElementById('blowBtn').hidden = true;
+  spawnConfetti(document.getElementById('scene-wish'));
+  document.getElementById('wishMessage').hidden = false;
+});
+
+renderMenu();
+renderPhotos();
+renderReasons();
+renderLetter();
+</script>
+</body>
+</html>
